@@ -9,14 +9,17 @@
 (defvar packages
   '(haskell-mode
     smex
-    magit)
+    magit
+    dash
+    flycheck)
   "Packages whose location follows the
   packages/package-name/package-name.el format.")
 
 (defvar custom-load-paths
   '("structured-haskell-mode/elisp"
     "hindent/elisp"
-    "git-modes")
+    "git-modes"
+    "stack-ide/stack-mode")
   "Custom load paths that don't follow the normal
   package-name/module-name.el format.")
 
@@ -45,6 +48,7 @@
                                           (symbol-name name)))
                      (require name))))
 
+(require 'stack-mode)
 (require 'shm)
 (require 'hindent)
 (require 'shm-case-split)

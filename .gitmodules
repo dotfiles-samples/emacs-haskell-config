@@ -22,3 +22,12 @@
 [submodule "packages/haskell-docs"]
 	path = packages/haskell-docs
 	url = https://github.com/chrisdone/haskell-docs.git
+[submodule "packages/stack-ide"]
+	path = packages/stack-ide
+	url = git@github.com:commercialhaskell/stack-ide.git
+[submodule "packages/flycheck"]
+	path = packages/flycheck
+	url = git@github.com:flycheck/flycheck.git
+[submodule "packages/dash"]
+	path = packages/dash
+	url = https://github.com/magnars/dash.el.git
