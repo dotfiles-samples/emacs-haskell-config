@@ -3,10 +3,7 @@
 
 (require 'haskell)
 (require 'haskell-mode)
-(require 'hindent)
-(require 'haskell-process)
 (require 'haskell-simple-indent)
-(require 'haskell-interactive-mode)
 (require 'haskell-font-lock)
 
 
@@ -29,17 +26,6 @@
         (setq compilation-error-regexp-alist
               haskell-compilation-error-regexp-alist)))))
 
-(defun haskell-interactive-toggle-print-mode ()
-  (interactive)
-  (setq haskell-interactive-mode-eval-mode
-        (intern
-         (ido-completing-read "Eval result mode: "
-                              '("fundamental-mode"
-                                "haskell-mode"
-                                "espresso-mode"
-                                "ghc-core-mode"
-                                "org-mode")))))
-
 (defun haskell-insert-doc ()
   "Insert the documentation syntax."
   (interactive)
@@ -48,10 +34,7 @@
 (defun haskell-insert-undefined ()
   "Insert undefined."
   (interactive)
-  (if (and (boundp 'structured-haskell-mode)
-           structured-haskell-mode)
-      (shm-insert-string "undefined")
-    (insert "undefined")))
+  (insert "undefined"))
 
 (defun haskell-move-right ()
   (interactive)
@@ -102,19 +85,6 @@
     (goto-char (point-min))
     (forward-char 4)))
 
-(defun shm-contextual-space ()
-  "Do contextual space first, and run shm/space if no change in
-the cursor position happened."
-  (interactive)
-  (if (looking-back "import")
-      (call-interactively 'haskell-mode-contextual-space)
-    (progn
-      (let ((ident (haskell-ident-at-point)))
-        (when ident
-          (and interactive-haskell-mode
-               (haskell-process-do-try-type ident))))
-      (call-interactively 'shm/space))))
-
 
 ;; Mode settings
 
@@ -157,7 +127,6 @@ the cursor position happened."
 
 ;; Add hook
 
-(add-hook 'haskell-mode-hook 'structured-haskell-mode)
 (add-hook 'haskell-mode-hook 'stack-mode)
 (add-hook 'haskell-interactive-mode-hook 'structured-haskell-repl-mode)
 (add-hook 'haskell-mode-hook 'haskell-auto-insert-module-template)
@@ -165,46 +134,9 @@ the cursor position happened."
 
 ;; Keybindings
 
-(define-key interactive-haskell-mode-map [f5] 'haskell-process-load-or-reload)
-(define-key interactive-haskell-mode-map [f12] 'haskell-process-reload-devel-main)
-(define-key interactive-haskell-mode-map (kbd "M-,") 'haskell-who-calls)
-(define-key interactive-haskell-mode-map (kbd "C-`") 'haskell-interactive-bring)
-(define-key interactive-haskell-mode-map (kbd "C-c C-k") 'haskell-interactive-mode-clear)
-(define-key interactive-haskell-mode-map (kbd "C-c C-c") 'haskell-process-cabal-build)
-(define-key interactive-haskell-mode-map (kbd "C-c c") 'haskell-process-cabal)
-(define-key interactive-haskell-mode-map (kbd "M-.") 'haskell-mode-goto-loc)
-(define-key interactive-haskell-mode-map (kbd "C-?") 'haskell-mode-find-uses)
-(define-key interactive-haskell-mode-map (kbd "C-c C-t") 'haskell-mode-show-type-at)
-
 (define-key haskell-mode-map (kbd "C-c i") 'hindent/reformat-decl)
 (define-key haskell-mode-map [f8] 'haskell-navigate-imports)
 (define-key haskell-mode-map (kbd "C-c C-u") 'haskell-insert-undefined)
-(define-key haskell-mode-map (kbd "C-c C-a") 'haskell-insert-doc)
 (define-key haskell-mode-map (kbd "C-<return>") 'haskell-simple-indent-newline-indent)
 (define-key haskell-mode-map (kbd "C-<right>") 'haskell-move-right)
 (define-key haskell-mode-map (kbd "C-<left>") 'haskell-move-left)
-(define-key haskell-mode-map (kbd "<space>") 'haskell-mode-contextual-space)
-
-(define-key haskell-cabal-mode-map (kbd "C-`") 'haskell-interactive-bring)
-(define-key haskell-cabal-mode-map [?\C-c ?\C-z] 'haskell-interactive-switch)
-(define-key haskell-cabal-mode-map (kbd "C-c C-c") 'haskell-process-cabal-build)
-(define-key haskell-cabal-mode-map (kbd "C-c c") 'haskell-process-cabal)
-(define-key haskell-cabal-mode-map (kbd "C-c C-k") 'haskell-interactive-mode-clear)
-
-(define-key haskell-interactive-mode-map (kbd "C-c C-v") 'haskell-interactive-toggle-print-mode)
-(define-key haskell-interactive-mode-map (kbd "C-c C-i") 'haskell-process-do-info)
-(define-key haskell-interactive-mode-map [f12] 'haskell-process-reload-devel-main)
-(define-key haskell-interactive-mode-map (kbd "C-<left>") 'haskell-interactive-mode-error-backward)
-(define-key haskell-interactive-mode-map (kbd "C-<right>") 'haskell-interactive-mode-error-forward)
-(define-key haskell-interactive-mode-map (kbd "C-c c") 'haskell-process-cabal)
-
-(define-key shm-map (kbd "C-c C-p") 'shm/expand-pattern)
-(define-key shm-map (kbd "C-c C-s") 'shm/case-split)
-(define-key shm-map (kbd "SPC") 'shm-contextual-space)
-(define-key shm-map (kbd "C-\\") 'shm/goto-last-point)
-(define-key shm-map (kbd "C-c C-f") 'shm-fold-toggle-decl)
-(define-key shm-map (kbd "C-c i") 'shm-reformat-decl)
-
-(custom-set-faces
- '(shm-quarantine-face ((t (:inherit font-lock-error))))
- '(shm-current-face ((t (:background "#efefef")))))

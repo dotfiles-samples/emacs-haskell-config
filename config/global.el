@@ -167,9 +167,6 @@
  '(safe-local-variable-values
    (quote ((haskell-indent-spaces . 4)
            (haskell-indent-spaces . 2)
-           (hindent-style . "chris-done")
-           (hindent-style . "gibiansky")
-           (hindent-style . "johan-tibell")
            (haskell-process-type . cabal-repl)
            (shm-lambda-indent-style . leftmost-parent)))))
 

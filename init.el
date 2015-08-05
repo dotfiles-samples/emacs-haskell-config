@@ -16,9 +16,7 @@
   packages/package-name/package-name.el format.")
 
 (defvar custom-load-paths
-  '("structured-haskell-mode/elisp"
-    "hindent/elisp"
-    "git-modes"
+  '("git-modes"
     "stack-ide/stack-mode")
   "Custom load paths that don't follow the normal
   package-name/module-name.el format.")
@@ -49,10 +47,6 @@
                      (require name))))
 
 (require 'stack-mode)
-(require 'shm)
-(require 'hindent)
-(require 'shm-case-split)
-(require 'shm-reformat)
 
 
 ;; Emacs configurations
