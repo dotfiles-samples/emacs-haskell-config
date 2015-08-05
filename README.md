@@ -1,4 +1,4 @@
-# emacs-haskell-config
+# emacs-haskell-config (stack-mode version)
 
 A quick and easy pre-configured Emacs for developing with Haskell. You
 can use this to try out the Emacs support for Haskell, or use it as a
